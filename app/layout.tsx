@@ -1,13 +1,16 @@
-import "./globals.css";
+import { AuthContextProvider } from './context/AuthContext';
+import './globals.css';
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+// Root layout component for the application
+export default function RootLayout( { children }: { children: React.ReactNode } ): JSX.Element {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {/* Wrap the children with the AuthContextProvider to provide authentication context */}
+        <AuthContextProvider>
+          {children}
+        </AuthContextProvider>
+      </body>
     </html>
   );
 }
