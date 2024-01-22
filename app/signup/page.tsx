@@ -24,6 +24,9 @@ function Page(): JSX.Element { // funktsioon tagastab react elemendi
     router.push( "/admin" );
   }
 
+
+  
+
   return (
     <div className="flex justify-center items-center h-screen text-black">
       <div className="w-96 bg-white rounded shadow p-6">

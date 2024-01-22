@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import firebase_app from '../firebase/config';
+import  getDocument  from "../firebase/firestore/getData";
 
 // Initialize Firebase auth instance
 const auth = getAuth( firebase_app );
@@ -42,7 +43,7 @@ export function AuthContextProvider( { children }: AuthContextProviderProps ): J
   // Provide the authentication context to child components
   return (
     <AuthContext.Provider value={{ user }}>
-       {loading ? <div>Loading...</div> : children} {/*kui loading True siis viska div element, muidu children react element */}
+      {loading ? <div>Loading...</div> : children} {/*kui loading True siis viska div element, muidu children react element */}
     </AuthContext.Provider>
   );
 }
