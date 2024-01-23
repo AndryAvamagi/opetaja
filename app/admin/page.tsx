@@ -3,14 +3,19 @@ import { useAuthContext } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import  getDocument  from "../firebase/firestore/getData";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, DocumentReference, DocumentSnapshot } from "firebase/firestore";
+import DocumentRefrenceToData from "../firebase/firestore/DocumentRefrenceToData";
 
 function Page(): JSX.Element {
   // Access the user object from the authentication context
   // const { user } = useAuthContext();
-  const { user } = useAuthContext() as { user: any }; // Use 'as' to assert the type as { user: any }
+  const { user } = useAuthContext() as { user: any };
   const router = useRouter();
-  const [userData, setUserData] = useState<DocumentData | null>(null)
+  const [userName, setUserName] = useState<String | null>(null)
+  const [userGroups, setUserGroups] = useState<String[]>([])
+  const [loading, setLoading] = useState(true);
+
+
 
   useEffect( () => {
     if ( user == null ) {
@@ -19,22 +24,48 @@ function Page(): JSX.Element {
 
     async function getData() {
       const fetchData = await getDocument('teachers', user.uid)
-
       const fetchedData = fetchData.result?.data()
+      const groups = fetchedData?.groups
+      const userName = fetchedData?.name
 
-      if (fetchedData){
-        setUserData(fetchedData)
+      const groupsDocumentData : String[] = [];
+      groups.forEach( async (docRef : DocumentReference) => {
+        const docData = await DocumentRefrenceToData(docRef)
+        const docDataResult = docData.result
+
+        if(docDataResult){
+          groupsDocumentData.push(docDataResult.id)
+        }
+
+      });
+
+      
+
+      if (fetchedData) {
+        setUserName(userName)
+        setUserGroups(groupsDocumentData)
+        console.log('The variable userGroups is ')
+        console.log(userGroups)
+        console.log(',.....')
+        console.log('the variable for groupsDocumentData is...')
+        setLoading(false);
       }
     }
     getData()
 
-  }, [ user, router] ); //router eemaldab eslinti errori
-
+  }, [user] );
 
   
+  if (loading) {
+    return (
+      <h1>waiting for groups...</h1>
+    )
+  } 
+  
+  console.log(userGroups)
 
-  return (
-    <h1>Only logged-in users can view this page. Hello {userData?.name}</h1>
+  return ( 
+    <h1>Only logged-in users can view this page. Hello {userName}. Groups {userGroups[0]}</h1>
   );
 }
 
