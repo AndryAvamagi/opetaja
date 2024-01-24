@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import  getDocument  from "../firebase/firestore/getData";
 import { DocumentData, DocumentReference, DocumentSnapshot } from "firebase/firestore";
-import DocumentRefrenceToData from "../firebase/firestore/DocumentRefrenceToData";
+import DocumentReferenceToData from "../firebase/firestore/DocumentRefrenceToData";
 
 function Page(): JSX.Element {
   // Access the user object from the authentication context
@@ -13,59 +13,42 @@ function Page(): JSX.Element {
   const router = useRouter();
   const [userName, setUserName] = useState<String | null>(null)
   const [userGroups, setUserGroups] = useState<String[]>([])
-  const [loading, setLoading] = useState(true);
+  const [userGroupIDs, setUserGroupIDs] = useState<{[key:string]:DocumentReference}>({})
 
 
 
   useEffect( () => {
-    if ( user == null ) {
+    if ( user === null ) {
       router.push( "/" );
     }
 
-    async function getData() {
+
+    async function getData() : Promise<{userName : String, groups : String[]}> {
       const fetchData = await getDocument('teachers', user.uid)
       const fetchedData = fetchData.result?.data()
       const groups = fetchedData?.groups
       const userName = fetchedData?.name
 
-      const groupsDocumentData : String[] = [];
-      groups.forEach( async (docRef : DocumentReference) => {
-        const docData = await DocumentRefrenceToData(docRef)
-        const docDataResult = docData.result
+      return {userName, groups}
+    }
+    
+    getData().then(({userName, groups}) => {
+      if (userName){
+        setUserName(userName)
+      }
 
-        if(docDataResult){
-          groupsDocumentData.push(docDataResult.id)
-        }
-
-      });
-
+      if (groups) {
+        setUserGroups(groups)
+      }
       
 
-      if (fetchedData) {
-        setUserName(userName)
-        setUserGroups(groupsDocumentData)
-        console.log('The variable userGroups is ')
-        console.log(userGroups)
-        console.log(',.....')
-        console.log('the variable for groupsDocumentData is...')
-        setLoading(false);
-      }
-    }
-    getData()
+    })
 
-  }, [user] );
-
-  
-  if (loading) {
-    return (
-      <h1>waiting for groups...</h1>
-    )
-  } 
-  
-  console.log(userGroups)
+  }, [user, router] );
+// kuna useEffect laeb iga componendi laadimise korral ühe korra juba, siis  userName ja groups muutumist ei pea jälgima
 
   return ( 
-    <h1>Only logged-in users can view this page. Hello {userName}. Groups {userGroups[0]}</h1>
+    <h1>Only logged-in users can view this page. Hello {userName}. {userGroups[0]}</h1>
   );
 }
 

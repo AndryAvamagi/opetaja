@@ -1,6 +1,6 @@
 import {getDoc, DocumentReference} from "firebase/firestore";
 
-export default async function DocumentRefrenceToData(docRef : DocumentReference) {
+export default async function DocumentReferenceToData(docRef : DocumentReference) {
     let result = null;
     let error = null;
 
