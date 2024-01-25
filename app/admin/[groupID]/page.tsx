@@ -1,4 +1,5 @@
 'use client'
+import DisplayStudent from "@/app/components/DisplayStudent"
 import getDocument from "@/app/firebase/firestore/getData"
 import { useEffect, useState } from "react"
 
@@ -40,6 +41,11 @@ export default function GroupPage({params} : any){
     })
 
     return(
+        <>
         <h1>This is {groupID}. The teacher id is {teacherID}. The course id is {courseID}. The students are {arrayStudentIDs}</h1>
+        {arrayStudentIDs.map((student) => (
+          <DisplayStudent studentID={student} courseID={courseID}/>
+      ))}
+        </>
     )
 }

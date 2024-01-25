@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import  getDocument  from "../firebase/firestore/getData";
 import { DocumentData, DocumentReference, DocumentSnapshot } from "firebase/firestore";
 import DocumentReferenceToData from "../firebase/firestore/DocumentRefrenceToData";
-import groupButton from "../components/groupButton";
 import Link from "next/link";
 
 function Page(): JSX.Element {
