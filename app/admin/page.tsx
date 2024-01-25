@@ -25,29 +25,34 @@ function Page(): JSX.Element {
     }
 
 
-    async function getData() : Promise<{userName : string, groups : string[]}> {
+    async function getData() : Promise<{userName : string, groups : string[]} | null> {
       const fetchData = await getDocument('teachers', user.uid)
-      const fetchedData = fetchData.result?.data()
-      const groups = fetchedData?.groups
-      const userName = fetchedData?.name
+      
+      if (fetchData){
+        const fetchedData = fetchData.result?.data()
+        const groups = fetchedData?.groups
+        const userName = fetchedData?.name
 
-      return {userName, groups}
+        return {userName, groups}
+      } else {
+        console.log('error fetching')
+        return null
+      }
     }
     
-    getData().then(({userName, groups}) => {
-      if (userName){
-        setUserName(userName)
-      }
-
-      if (groups) {
-        setUserGroups(groups)
+    getData().then((result) => {
+      if (result) {
+        setUserGroups(result.groups)
+        setUserName(result.userName)
+      } else {
+        console.log('Error fetching')
       }
       
 
     })
 
   }, [user, router] );
-// kuna useEffect laeb iga componendi laadimise korral ühe korra juba, siis  userName ja groups muutumist ei pea jälgima
+// kuna useEffect laeb iga componendi laadimise korral ühe korra juba, siis  userName ja groups muutumist ei pea jälgima, küll aga võiks jälgida, kui data muutub databases
 
 
 
