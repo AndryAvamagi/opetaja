@@ -44,7 +44,7 @@ export default function GroupPage({params} : any){
         <>
         <h1>This is {groupID}. The teacher id is {teacherID}. The course id is {courseID}. The students are {arrayStudentIDs}</h1>
         {arrayStudentIDs.map((student) => (
-          <DisplayStudent studentID={student} courseID={courseID}/>
+          <DisplayStudent key={student} studentID={student} courseID={courseID}/>
       ))}
         </>
     )
