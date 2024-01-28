@@ -8,11 +8,12 @@ export default function DisplayStudent(props : any) : JSX.Element{
     const [studentName, setStudentName] = useState<string>('')
     const [allChapters, setAllChapters] = useState<string[]>([])
     const [courseName, setCourseName] = useState<string>('')
+    
 
     useEffect(() => {
         async function getData() : Promise<{courseName : string, courseChapters : string[], studentName : string, studentCurrChapters : {[key : string] : string}} | null>{
-            const fetchDataCourse = await getDocument('courses', course)
             const fetchDataStudent = await getDocument('students', student)
+            const fetchDataCourse = await getDocument('courses', course)
             
             if(fetchDataCourse.error && fetchDataStudent.error){
                 console.log('there was an error fetching data')
@@ -43,7 +44,7 @@ export default function DisplayStudent(props : any) : JSX.Element{
         })
 
 
-    })
+    },[])
 
     const courseLength = allChapters.length
     const currChapter = currChapters[courseName]

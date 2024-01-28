@@ -1,11 +1,11 @@
 import firebase_app from "../config";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc } from "firebase/firestore";
 
 // Get the Firestore instance
 const db = getFirestore(firebase_app);
 
 // Function to add data to a Firestore collection
-export default async function addData(
+export async function addData(
   collection: string,
   id: string,
   data: any
@@ -27,4 +27,24 @@ export default async function addData(
 
   // Return the result and error as an object
   return { result, error };
+}
+
+export async function updateData(
+  collection : string, 
+  id : string,
+  data : any
+){
+  let result = null;
+  let error = null;
+
+  try {
+    result = await updateDoc(doc(db, collection, id), data, {
+      merge: true, 
+    });
+  } catch (e) {
+    error = e;
+  }
+
+  return { result, error };
+
 }
