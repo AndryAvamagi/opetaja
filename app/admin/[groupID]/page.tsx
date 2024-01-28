@@ -1,5 +1,6 @@
 'use client'
 import AddStudent from "@/app/components/AddStudent"
+import RemoveStudent from "@/app/components/RemoveStudent"
 import DisplayStudent from "@/app/components/DisplayStudent"
 import getDocIdFromCollection from "@/app/firebase/firestore/getCollection"
 import getDocument from "@/app/firebase/firestore/getData"
@@ -101,11 +102,14 @@ export default function GroupPage({params} : any){
         {
             
             arrayStudentIDs.map((studentID) => 
+                <>
                 <DisplayStudent key={studentID} studentID={studentID} courseID={courseID}/>
+                <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
+                </>
             )
         }
 
-        <br />
+        <br/>
 
         {
             studentsNotInThisGroup.map((studentID) => 

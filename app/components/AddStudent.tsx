@@ -8,7 +8,8 @@ import getDocument from "../firebase/firestore/getData"
 export default function AddStudent(props : any) : JSX.Element {
     const studentID : string = props.studentID
     const groupID : string = props.groupID
-    const startingChapter : string = props.allChapters[0]
+    const allChapters : string[] = props.allChapters
+    const startingChapter : string = allChapters[0]
     const courseName : string = props.courseName
     const [studentCurrChapters, setStudentCurrChapters] = useState<{[key : string]:string}>({})
 
@@ -33,9 +34,9 @@ export default function AddStudent(props : any) : JSX.Element {
         })
     })
 
-    studentCurrChapters[courseName] = startingChapter
-
-
+    if (allChapters.indexOf(studentCurrChapters[courseName]) === -1){
+        studentCurrChapters[courseName] = startingChapter
+    }
     
 
 
