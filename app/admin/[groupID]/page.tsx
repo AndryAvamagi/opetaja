@@ -23,6 +23,12 @@ export default function GroupPage({params} : any){
 
 
     useEffect(() => {
+        const cur = JSON.parse(window.localStorage.getItem('manageView') || 'null')
+        if(cur){
+            setManageView(cur)
+        }
+        
+
         async function getData() : Promise<{teacher : string, course : string, students : string[], allStudents : string[]} | null>{
             const fetchDataGroups = await getDocument('groups', groupID)
             
@@ -97,6 +103,15 @@ export default function GroupPage({params} : any){
         }
         
     });
+
+    
+    useEffect(() => {
+        window.localStorage.setItem('manageView', JSON.stringify(manageView));
+      }, [manageView]);
+
+
+
+    
 
     return(
         <>

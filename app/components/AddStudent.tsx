@@ -57,7 +57,7 @@ export default function AddStudent(props : any) : JSX.Element {
             currChapter : studentCurrChapters
         })
 
-        // window.location.reload();
+        window.location.reload();
     }
 
     return(
