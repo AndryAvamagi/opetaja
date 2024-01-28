@@ -19,6 +19,9 @@ export default function GroupPage({params} : any){
     const [allChapters, setAllChapters] = useState<string[]>([])
     const [courseName, setCourseName] = useState<string>('')
 
+    const [manageView, setManageView] = useState<boolean>(false)
+
+
     useEffect(() => {
         async function getData() : Promise<{teacher : string, course : string, students : string[], allStudents : string[]} | null>{
             const fetchDataGroups = await getDocument('groups', groupID)
@@ -97,6 +100,7 @@ export default function GroupPage({params} : any){
 
     return(
         <>
+        <button onClick={() => {setManageView(!manageView)}}>click here to toggle view</button>
         <h1>This is {groupID}. The teacher id is {teacherID}. The course id is {courseID}.</h1>
         <h1>The course name is {courseName} and all the chapters are {allChapters}</h1>
         {
@@ -104,7 +108,10 @@ export default function GroupPage({params} : any){
             arrayStudentIDs.map((studentID) => 
                 <>
                 <DisplayStudent key={studentID} studentID={studentID} courseID={courseID}/>
-                <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
+                {
+                    manageView && 
+                    <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
+                }    
                 </>
             )
         }
@@ -112,6 +119,7 @@ export default function GroupPage({params} : any){
         <br/>
 
         {
+            manageView &&
             studentsNotInThisGroup.map((studentID) => 
                 <AddStudent key={studentID} studentID={studentID} groupID={groupID} allChapters={allChapters} courseName={courseName}/>
             )
