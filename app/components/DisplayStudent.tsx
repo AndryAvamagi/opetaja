@@ -3,29 +3,25 @@ import getDocument from "../firebase/firestore/getData"
 
 export default function DisplayStudent(props : any) : JSX.Element{
     const student = props.studentID
-    const course = props.courseID
+    const courseName = props.courseName
+    const allChapters = props.allChapters
+
     const [currChapters, setCurrChapters] = useState<{[key : string] : string}>({})
     const [studentName, setStudentName] = useState<string>('')
-    const [allChapters, setAllChapters] = useState<string[]>([])
-    const [courseName, setCourseName] = useState<string>('')
     
 
     useEffect(() => {
-        async function getData() : Promise<{courseName : string, courseChapters : string[], studentName : string, studentCurrChapters : {[key : string] : string}} | null>{
+        async function getData() : Promise<{ studentName : string, studentCurrChapters : {[key : string] : string}} | null>{
             const fetchDataStudent = await getDocument('students', student)
-            const fetchDataCourse = await getDocument('courses', course)
             
-            if(fetchDataCourse.error && fetchDataStudent.error){
+            if(fetchDataStudent.error){
                 console.log('there was an error fetching data')
             } else {
-                const fetchedDataCourse = fetchDataCourse.result?.data()
                 const fetchedDataStudent = fetchDataStudent.result?.data()
-                const courseName = fetchedDataCourse?.name 
-                const courseChapters = fetchedDataCourse?.chapters
                 const studentName = fetchedDataStudent?.name
                 const studentCurrChapters = fetchedDataStudent?.currChapter
 
-                return {courseName, courseChapters, studentName, studentCurrChapters}
+                return {studentName, studentCurrChapters}
             }
             
             return null
@@ -33,8 +29,6 @@ export default function DisplayStudent(props : any) : JSX.Element{
 
         getData().then((result) => {
             if(result){
-                setAllChapters(result.courseChapters)
-                setCourseName(result.courseName)
                 setCurrChapters(result.studentCurrChapters)
                 setStudentName(result.studentName)
 

@@ -3,8 +3,6 @@ import { useAuthContext } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import  getDocument  from "../firebase/firestore/getData";
-import { DocumentData, DocumentReference, DocumentSnapshot } from "firebase/firestore";
-import DocumentReferenceToData from "../firebase/firestore/DocumentRefrenceToData";
 import Link from "next/link";
 
 function Page(): JSX.Element {
@@ -12,7 +10,7 @@ function Page(): JSX.Element {
   // const { user } = useAuthContext();
   const { user } = useAuthContext() as { user: any };
   const router = useRouter();
-  const [userName, setUserName] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string>('')
   const [userGroups, setUserGroups] = useState<string[]>([])
   
 
@@ -39,7 +37,8 @@ function Page(): JSX.Element {
       }
     }
     
-    getData().then((result) => {
+    getData()
+    .then((result) => {
       if (result) {
         setUserName(result.userName)
         setUserGroups(result.groups)

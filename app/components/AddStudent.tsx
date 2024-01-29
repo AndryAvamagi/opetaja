@@ -11,17 +11,21 @@ export default function AddStudent(props : any) : JSX.Element {
     const allChapters : string[] = props.allChapters
     const startingChapter : string = allChapters[0]
     const courseName : string = props.courseName
+
+    const [studentName, setStudentName] = useState<string>('')
     const [studentCurrChapters, setStudentCurrChapters] = useState<{[key : string]:string}>({})
 
     useEffect(()=>{
         async function getData() {
             const fetchDataStudent = await getDocument('students', studentID)
+            
             if (fetchDataStudent.error) {
                 console.log('error fetching student data')
             } else {
                 const fetchedDataStudent = fetchDataStudent.result?.data()
+                const studentName = fetchedDataStudent?.name
                 const currChapters = fetchedDataStudent?.currChapter
-                return currChapters
+                return {studentName, currChapters}
             }
             return null
         }
@@ -29,11 +33,14 @@ export default function AddStudent(props : any) : JSX.Element {
         getData()
         .then((result)=>{
             if (result){
-                setStudentCurrChapters(result)
+                setStudentName(result.studentName)
+                setStudentCurrChapters(result.currChapters)
             }
         })
     })
 
+
+    // kui opilane pole veel kursusega kunagi pihta hakanud, ehk kursust pole tema currChapteris siis maara currChapteris kursuse vastele esimene peatukk
     if (allChapters.indexOf(studentCurrChapters[courseName]) === -1){
         studentCurrChapters[courseName] = startingChapter
     }
@@ -62,7 +69,7 @@ export default function AddStudent(props : any) : JSX.Element {
 
     return(
         <div>
-            <h2>{studentID}</h2>
+            <h2>{studentName}</h2>
             <button onClick={addStudentToGroup}>click to add</button>
             <br/>
         </div>

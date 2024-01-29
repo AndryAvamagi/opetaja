@@ -6,8 +6,8 @@ const auth = getAuth(firebase_app);
 
 // Function to sign up a user with email and password
 export default async function signUp(email: string, password: string) {
-  let result = null, // Variable to store the sign-up result
-    error = null; // Variable to store any error that occurs
+  let result = null; // Variable to store the sign-up result
+  let error = null; // Variable to store any error that occurs
 
     
   // by default mõlemad väärtused null, emmal kummal juhul saab üksneist väärtuse

@@ -9,21 +9,26 @@ import { useEffect, useState } from "react"
 
 export default function GroupPage({params} : any){
     const groupID : string= params.groupID
+    
+    //group id fetch
     const [courseID, setCourseID] = useState<string>('')
     const [teacherID, setTeacherID] = useState<string>('')
-    const [arrayStudentIDs, setArrayStudentIDs] = useState<string[]>([])
+    const [arrayStudentIDs, setArrayStudentIDs] = useState<string[]>([]) //only group students
 
+
+    //collectionist all student id
     const [allStudents, setAllStudents] = useState<string[]>([])
 
-
+    //course id -> all chapters of that course, course name and 
     const [allChapters, setAllChapters] = useState<string[]>([])
     const [courseName, setCourseName] = useState<string>('')
 
+    //manage view enabled or disabled, by default disabled, aga votab localstoragest selle peamiselt, peab midagi paremat valja motlema
     const [manageView, setManageView] = useState<boolean>(false)
 
 
     useEffect(() => {
-        const cur = JSON.parse(window.localStorage.getItem('manageView') || 'null')
+        const cur = JSON.parse(window.localStorage.getItem('manageView') || 'null') //votab manageView vaartuse localStoragest
         if(cur){
             setManageView(cur)
         }
@@ -31,19 +36,17 @@ export default function GroupPage({params} : any){
 
         async function getData() : Promise<{teacher : string, course : string, students : string[], allStudents : string[]} | null>{
             const fetchDataGroups = await getDocument('groups', groupID)
-            
             const fetchDataAllStudents = await getDocIdFromCollection('students')
             
             
-            if(fetchDataGroups.error /*|| fetchDataAllStudents.error*/){
+            if(fetchDataGroups.error || fetchDataAllStudents.error){
                 console.log('there was an error fetching data')
             } else {
                 const fetchedData = fetchDataGroups.result?.data()
                 const fetchedDataAllStudents = fetchDataAllStudents.result?.docs
                 
-                
+                //loopin labi fetchedDataAllStudents, et saada array koikidest opilastest
                 let allStudents : string[] = []
-                
                 if (fetchedDataAllStudents){
                     let doc : DocumentSnapshot
                     for (doc of fetchedDataAllStudents){
@@ -54,9 +57,7 @@ export default function GroupPage({params} : any){
 
                 const teacher = fetchedData?.teacher
                 const course = fetchedData?.course
-                const students : string[] = fetchedData?.students
-
-                console.log(students)
+                const students = fetchedData?.students
 
                 return {teacher, course, students, allStudents}
             }
@@ -79,6 +80,7 @@ export default function GroupPage({params} : any){
         })
         .then( async (courseID)=>{
             const fetchDataCourses = await getDocument('courses', courseID)
+            
             if(fetchDataCourses.error){
                 console.log('error fetching course')
             } else {
@@ -96,6 +98,8 @@ export default function GroupPage({params} : any){
 
     }, [])
 
+
+    // siin ma loopin labi koik studentid ja lisan uute arraysse ainult need, kes ei ole antud grupis
     let studentsNotInThisGroup : string[] = []
     allStudents.forEach(element => {
         if(arrayStudentIDs.indexOf(element) === -1){
@@ -105,7 +109,7 @@ export default function GroupPage({params} : any){
     });
 
     
-    useEffect(() => {
+    useEffect(() => { //kui kutsutakse valja buttoniga setManageView, siis muutub manageView vastupidiseks ja kuna see muutub, siis see useEffect laheb toole ja muudab localstorages info
         window.localStorage.setItem('manageView', JSON.stringify(manageView));
       }, [manageView]);
 
@@ -122,7 +126,7 @@ export default function GroupPage({params} : any){
             
             arrayStudentIDs.map((studentID) => 
                 <>
-                <DisplayStudent key={studentID} studentID={studentID} courseID={courseID}/>
+                <DisplayStudent key={studentID} studentID={studentID} courseID={courseID} courseName={courseName} allChapters={allChapters}/>
                 {
                     manageView && 
                     <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
