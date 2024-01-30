@@ -25,8 +25,7 @@ export default function RemoveStudent(props : any) : JSX.Element {
 
     return(
         <div>
-            <h2>{}</h2>
-            <button onClick={removeStudentFromGroup}>click to remove</button>
+            <button onClick={removeStudentFromGroup} className="rounded-lg bg-red-600 text-white w-6 mx-2 hover:bg-red-800">-</button>
             <br/>
         </div>
     )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import getDocument from "../firebase/firestore/getData"
 
+
 export default function DisplayStudent(props : any) : JSX.Element{
     const student = props.studentID
     const courseName = props.courseName
@@ -48,7 +49,23 @@ export default function DisplayStudent(props : any) : JSX.Element{
 
 
     return(
-        <div> <h1>{studentName} and {courseName} and {currChapters[courseName]} and that means that this student has done {percentOfCourseDone}% of the course</h1></div>
+        <div className="flex items-center justify-between w-full py-2">
+            <div className="mx-2 w-24">
+                {studentName}
+            </div>
+            
+            <div className="flex flex-col items-center">
+                
+                <div className="flex items-center w-64 bg-neutral-100 rounded-lg ">
+                    <div
+                    className="bg-blue-500 z-10 rounded-l-lg"
+                    style={{ width: `${percentOfCourseDone}%` }}>
+                        <div className="text-[10px] text-center">{percentOfCourseDone}%</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
        
     )
 } 

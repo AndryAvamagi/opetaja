@@ -56,13 +56,20 @@ function Page(): JSX.Element {
   return ( 
     <>
     <h1>Only logged-in users can view this page. Hello {userName}.</h1>
-    <ul>
+    <div className="flex flex-wrap">
       {userGroups.map((group) => (
-        <li key={group}>
-          <Link href={`/admin/${group}`}>{group}</Link>
-        </li>
-      ))}
-    </ul>
+            <div key={group} className="flex grow border-2">
+              <Link key={group} href={`/admin/${group}`}>
+                <div>
+                  {group}
+                </div>
+              </Link>
+            </div>
+      ))
+      }
+    </div>
+
+    
     </>
   );
 }

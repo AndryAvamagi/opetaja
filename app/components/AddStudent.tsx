@@ -68,9 +68,9 @@ export default function AddStudent(props : any) : JSX.Element {
     }
 
     return(
-        <div>
-            <h2>{studentName}</h2>
-            <button onClick={addStudentToGroup}>click to add</button>
+        <div className="flex items-center">
+            <div className="w-16 mx-2">{studentName}</div>
+            <button onClick={addStudentToGroup} className="rounded-lg bg-green-600 text-white w-6 m-2 hover:bg-green-800">+</button>
             <br/>
         </div>
     )

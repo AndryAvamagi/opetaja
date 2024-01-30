@@ -6,6 +6,7 @@ import getDocIdFromCollection from "@/app/firebase/firestore/getCollection"
 import getDocument from "@/app/firebase/firestore/getData"
 import { DocumentSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
+import classNames from "classnames"
 
 export default function GroupPage({params} : any){
     const groupID : string= params.groupID
@@ -119,30 +120,64 @@ export default function GroupPage({params} : any){
 
     return(
         <>
-        <button onClick={() => {setManageView(!manageView)}}>click here to toggle view</button>
-        <h1>This is {groupID}. The teacher id is {teacherID}. The course id is {courseID}.</h1>
-        <h1>The course name is {courseName} and all the chapters are {allChapters}</h1>
-        {
-            
-            arrayStudentIDs.map((studentID) => 
-                <>
-                <DisplayStudent key={studentID} studentID={studentID} courseID={courseID} courseName={courseName} allChapters={allChapters}/>
-                {
-                    manageView && 
-                    <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
-                }    
-                </>
-            )
-        }
+        
+        <div className="flex justify-self-center items-center flex-col">
+            <h1>This is {groupID}.</h1>
+            <h1>The course name is {courseName}</h1>
+        </div>
 
-        <br/>
+        <div className="m-5 shadow border-2 min-h-screen"> 
+        {/* ainuke põhjus, miks ma min heighti määrasin on see, et kui manageView enableda siis läheb lehekülg instant pikkemaks ning tekib scrollwheel, mis liigutas kõik parempoolsed elemendid veits vasakule, kaasaarvatud toggle, mis tõsiselt häiris mind */}
 
-        {
-            manageView &&
-            studentsNotInThisGroup.map((studentID) => 
-                <AddStudent key={studentID} studentID={studentID} groupID={groupID} allChapters={allChapters} courseName={courseName}/>
-            )
-        }
+            <div className="flex justify-between">
+                
+                <div className="flex-col border-2">    
+                    {
+                        arrayStudentIDs.map((studentID) => 
+
+                        <div key={studentID} className="flex items-center border-2">
+                            
+                            <DisplayStudent key={studentID} studentID={studentID} courseID={courseID} courseName={courseName} allChapters={allChapters}/>
+                            {
+                                manageView && 
+                                <RemoveStudent key={studentID} studentID={studentID} groupID = {groupID}/>
+                            }    
+                            
+                        </div>
+                        )
+                    }
+
+                    <br/>
+
+                    {
+                        manageView &&
+                        studentsNotInThisGroup.map((studentID) => 
+                            <AddStudent key={studentID} studentID={studentID} groupID={groupID} allChapters={allChapters} courseName={courseName}/>
+                        )
+                    }
+                </div>
+
+                <div 
+                onClick={() => {setManageView(!manageView)}}
+                className={classNames("flex w-10 h-5 m-5 bg-gray-400 rounded-full transition-all duration-800", {
+                    'bg-green-600' : manageView
+                })}
+                >
+                    <span className={classNames('w-5 h-5 bg-white shadow rounded-full transition-all duration-800', {
+                        'ml-5' : manageView
+                    })}></span>
+                </div>
+                {/* <div className="flex justify-end items-start self-start border-2 bg-blue-500 text-white font-semibold p-2 rounded">
+                    <button onClick={() => {setManageView(!manageView)}}>button</button>
+                </div> */}
+            </div>
+        </div>
+
+
+        
+
+
+       
         </>
     )
 }
