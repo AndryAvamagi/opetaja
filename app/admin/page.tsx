@@ -53,20 +53,35 @@ function Page(): JSX.Element {
 // kuna useEffect laeb iga componendi laadimise korral ühe korra juba, siis  userName ja groups muutumist ei pea jälgima, küll aga võiks jälgida, kui data muutub databases
 
 
+  //dummy cases
+  function dummyCases(number : number) {
+    let tempArray : JSX.Element[]= []
+    for (let index = 0; index < number; index++) {
+      tempArray.push(<div className="flex justify-center items-center w-1/6  mx-[20.5px] mt-5 aspect-video shadow-lg hover:scale-95"> test case</div>)
+      
+    }
+    return(tempArray)
+  }
+  
+
   return ( 
     <>
-    <h1>Only logged-in users can view this page. Hello {userName}.</h1>
-    <div className="flex flex-wrap">
+    <div className="flex flex-col justify-center items-center w-full text-black font-bold text-4xl uppercase mt-10">
+      <h1>hello <span className="text-blue-600">{userName}</span></h1>
+      <h1 className="text-lg">please choose your group</h1>
+    </div>
+    <div className="flex flex-wrap m-2 pb-5 shadow-lg justify-start ">
       {userGroups.map((group) => (
-            <div key={group} className="flex grow border-2">
-              <Link key={group} href={`/admin/${group}`}>
-                <div>
-                  {group}
-                </div>
-              </Link>
-            </div>
+            
+          <Link key={group} href={`/admin/${group}`} className="flex justify-center items-center w-1/6  mx-[20.5px] mt-5 aspect-video shadow-lg hover:scale-95">
+            <h1 className="text-xl font-bold mb-6 text-blue-600 uppercase">{group}</h1>
+          </Link>
+            
       ))
       }
+
+      
+      {dummyCases(10)}
     </div>
 
     

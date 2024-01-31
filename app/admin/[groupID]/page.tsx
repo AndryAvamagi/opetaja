@@ -121,21 +121,19 @@ export default function GroupPage({params} : any){
     return(
         <>
         
-        <div className="flex justify-self-center items-center flex-col">
-            <h1>This is {groupID}.</h1>
-            <h1>The course name is {courseName}</h1>
+        <div className="flex flex-col justify-center items-center text-black font-bold text-4xl uppercase m-5 pb-5 shadow-md">
+            <h1>this is course <span className="text-blue-600">{courseName}</span></h1>
         </div>
 
-        <div className="m-5 shadow border-2 min-h-screen"> 
         {/* ainuke põhjus, miks ma min heighti määrasin on see, et kui manageView enableda siis läheb lehekülg instant pikkemaks ning tekib scrollwheel, mis liigutas kõik parempoolsed elemendid veits vasakule, kaasaarvatud toggle, mis tõsiselt häiris mind */}
 
-            <div className="flex justify-between">
+            <div className="flex justify-between m-5 shadow-lg min-h-screen">
                 
-                <div className="flex-col border-2">    
+                <div className="flex-col ">    
                     {
                         arrayStudentIDs.map((studentID) => 
 
-                        <div key={studentID} className="flex items-center border-2">
+                        <div key={studentID} className="flex items-center ">
                             
                             <DisplayStudent key={studentID} studentID={studentID} courseID={courseID} courseName={courseName} allChapters={allChapters}/>
                             {
@@ -157,7 +155,7 @@ export default function GroupPage({params} : any){
                     }
                 </div>
 
-                <div 
+                <button 
                 onClick={() => {setManageView(!manageView)}}
                 className={classNames("flex w-10 h-5 m-5 bg-gray-400 rounded-full transition-all duration-800", {
                     'bg-green-600' : manageView
@@ -166,12 +164,9 @@ export default function GroupPage({params} : any){
                     <span className={classNames('w-5 h-5 bg-white shadow rounded-full transition-all duration-800', {
                         'ml-5' : manageView
                     })}></span>
-                </div>
-                {/* <div className="flex justify-end items-start self-start border-2 bg-blue-500 text-white font-semibold p-2 rounded">
-                    <button onClick={() => {setManageView(!manageView)}}>button</button>
-                </div> */}
+                </button>
+               
             </div>
-        </div>
 
 
         
