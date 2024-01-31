@@ -7,9 +7,12 @@ import getDocument from "@/app/firebase/firestore/getData"
 import { DocumentSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import classNames from "classnames"
+import Link from "next/link"
 
 export default function GroupPage({params} : any){
     const groupID : string= params.groupID
+
+    const [loading, setLoading] = useState<boolean>(true)
     
     //group id fetch
     const [courseID, setCourseID] = useState<string>('')
@@ -95,7 +98,10 @@ export default function GroupPage({params} : any){
         .then((result) => {
             setAllChapters(result?.allChapters)
             setCourseName(result?.courseName)
+
+            setLoading(false)
         })
+
 
     }, [])
 
@@ -119,10 +125,13 @@ export default function GroupPage({params} : any){
     
 
     return(
+        loading ? <div className="h-screen w-screen flex justify-center items-center">loading wheel 😎</div> :
         <>
         
-        <div className="flex flex-col justify-center items-center text-black font-bold text-4xl uppercase m-5 pb-5 shadow-md">
+        <div className="flex justify-between items-center text-black font-bold text-4xl uppercase m-5 pb-5 shadow-md">
+            <Link href={'/admin'} className="flex text-sm hover:underline"> back </Link>
             <h1>this is course <span className="text-blue-600">{courseName}</span></h1>
+            <div></div>
         </div>
 
         {/* ainuke põhjus, miks ma min heighti määrasin on see, et kui manageView enableda siis läheb lehekülg instant pikkemaks ning tekib scrollwheel, mis liigutas kõik parempoolsed elemendid veits vasakule, kaasaarvatud toggle, mis tõsiselt häiris mind */}
@@ -154,18 +163,19 @@ export default function GroupPage({params} : any){
                         )
                     }
                 </div>
-
-                <button 
-                onClick={() => {setManageView(!manageView)}}
-                className={classNames("flex w-10 h-5 m-5 bg-gray-400 rounded-full transition-all duration-800", {
-                    'bg-green-600' : manageView
-                })}
-                >
-                    <span className={classNames('w-5 h-5 bg-white shadow rounded-full transition-all duration-800', {
-                        'ml-5' : manageView
-                    })}></span>
-                </button>
-               
+                <div className="flex flex-row">
+                    <h1 className="text-xs font-bold uppercase mr-1 mt-3 text-gray-500">manage</h1>
+                    <button 
+                    onClick={() => {setManageView(!manageView)}}
+                    className={classNames("flex w-10 h-5 m-3 bg-gray-400 rounded-full transition-all duration-800", {
+                        'bg-green-600' : manageView
+                    })}
+                    >
+                        <span className={classNames('w-5 h-5 bg-white shadow rounded-full transition-all duration-800', {
+                            'ml-5' : manageView
+                        })}></span>
+                    </button>
+                </div>
             </div>
 
 

@@ -1,4 +1,4 @@
-'use client'
+
 import { useEffect, useState } from "react"
 import {addData, updateData}  from "../firebase/firestore/addData"
 import { arrayUnion } from "firebase/firestore"

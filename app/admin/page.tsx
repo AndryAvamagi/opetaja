@@ -74,7 +74,7 @@ function Page(): JSX.Element {
       {userGroups.map((group) => (
             
           <Link key={group} href={`/admin/${group}`} className="flex justify-center items-center w-1/6  mx-[20.5px] mt-5 aspect-video shadow-lg hover:scale-95">
-            <h1 className="text-xl font-bold mb-6 text-blue-600 uppercase">{group}</h1>
+            <h1 className="text-lg font-bold mb-6 text-blue-600 uppercase">{group}</h1>
           </Link>
             
       ))
