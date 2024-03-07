@@ -25,6 +25,27 @@ function Page(): JSX.Element {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="w-full max-w-xs">
+        <div className="flex flex-col absolute left-5 top-5 text-xs">
+          Proovi kasutajaid: 
+          <div className="border">
+            email: opetaja1@gmail.com
+            <br />
+            password: opetaja1 
+          </div>
+          <div className="border">
+            email: opetaja2@gmail.com
+            <br />
+            password: opetaja2 
+          </div>
+          <div className="border">
+            email: opetaja3@gmail.com
+            <br />
+            password: opetaja3
+          </div>
+
+          
+
+        </div>
         <form onSubmit={handleForm} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h1 className="text-3xl font-bold mb-6 text-black">Sign In</h1>
           <div className="mb-4">
